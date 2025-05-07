@@ -22,8 +22,21 @@ train_input, test_input, train_target, test_target = train_test_split(perch_leng
 train_input = train_input.reshape(-1,1)
 test_input = test_input.reshape(-1,1)
 
+train_poly = np.column_stack((train_input ** 2, train_input))
+test_poly = np.column_stack((test_input ** 2, test_input))
+
 lr = LinearRegression()
 
-lr.fit(train_input, train_target)
+lr.fit(train_poly, train_target)
 
-print(lr.predict([[50]]))
+print(lr.predict([[50**2, 50]]))
+print(lr.coef_, lr.intercept_)
+
+point = np.arange(15, 50)
+
+plt.scatter(train_input, train_target)
+plt.scatter(50, lr.predict([[50**2, 50]]), marker='^')
+plt.plot(point, 1.01*point**2 - 21.6*point + 116.05, color='red')
+plt.xlabel('length')
+plt.ylabel('weight')
+plt.show()
